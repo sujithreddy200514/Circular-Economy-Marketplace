@@ -547,7 +547,7 @@ const HomePage: React.FC = () => {
           Register today to buy recovered materials or sell your surplus resources
           to supply chain companies committed to sustainability and efficiency.
         </CTADescription>
-        <CTAButton to="/create-listing">Start Selling</CTAButton>
+        <CTAButton to="/register">Join</CTAButton>
       </CTASection>
     </PageContainer>
   );
