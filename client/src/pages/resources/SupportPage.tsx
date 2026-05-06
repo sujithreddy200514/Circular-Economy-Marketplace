@@ -192,7 +192,7 @@ const SupportPage: React.FC = () => {
                 <ContactIcon>💬</ContactIcon>
                 <ContactDetails>
                   <ContactLabel>Address:</ContactLabel>
-                  <ContactValue>Mahindra University, Hyderabad, Telangana</ContactValue>
+                  <ContactValue>Mahindra University, Hyderabad, Telangana 500043</ContactValue>
                 </ContactDetails>
               </ContactRow>
             </ContactInfo>

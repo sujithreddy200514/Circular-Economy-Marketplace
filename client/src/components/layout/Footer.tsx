@@ -263,7 +263,7 @@ const Footer: React.FC = () => {
             CircularEco@gmail.com<br />
             +91 9493377754<br />
             Mahindra University<br />
-            Hyderabad, Telangana
+            Hyderabad, Telangana 500043
           </FooterText>
           <FooterText>
             <strong>Working Hours:</strong><br />
