@@ -168,8 +168,7 @@ const SupportPage: React.FC = () => {
             transition={{ duration: 0.4 }}
           >
             <p>
-              Our support team is available during business hours, which conveniently happen to be 
-              whenever we feel like working. Here's how to reach us (or at least try):
+              Reach the CircularEco team for marketplace, supply chain, and material listing support.
             </p>
             
             <ContactInfo>
@@ -177,7 +176,7 @@ const SupportPage: React.FC = () => {
                 <ContactIcon>📧</ContactIcon>
                 <ContactDetails>
                   <ContactLabel>Email:</ContactLabel>
-                  <ContactValue>black-hole@circulareconomy.example</ContactValue>
+                  <ContactValue>CircularEco@gmail.com</ContactValue>
                 </ContactDetails>
               </ContactRow>
               
@@ -185,21 +184,21 @@ const SupportPage: React.FC = () => {
                 <ContactIcon>☎️</ContactIcon>
                 <ContactDetails>
                   <ContactLabel>Phone:</ContactLabel>
-                  <ContactValue>1-800-GOOD-LUCK (Estimated wait time: your entire lifespan)</ContactValue>
+                  <ContactValue>+91 9493377754</ContactValue>
                 </ContactDetails>
               </ContactRow>
               
               <ContactRow>
                 <ContactIcon>💬</ContactIcon>
                 <ContactDetails>
-                  <ContactLabel>Live Chat:</ContactLabel>
-                  <ContactValue>Currently offline (since 2019)</ContactValue>
+                  <ContactLabel>Address:</ContactLabel>
+                  <ContactValue>Mahindra University, Hyderabad, Telangana</ContactValue>
                 </ContactDetails>
               </ContactRow>
             </ContactInfo>
             
             <DisclaimerText>
-              * Response times may vary from "eventually" to "when pigs fly." Please adjust your expectations accordingly.
+              * We usually respond during working hours.
             </DisclaimerText>
           </SupportCard>
         </SupportSection>
@@ -213,44 +212,43 @@ const SupportPage: React.FC = () => {
             transition={{ delay: 0.2, duration: 0.4 }}
           >
             <p>
-              Fill out this form to send your question directly to our automated 
-              system that's programmed to lose it immediately.
+              Fill out this form to send your question to the CircularEco support team.
             </p>
             
             <form>
               <FormGroup>
                 <Label htmlFor="name">Your Name</Label>
-                <Input id="name" type="text" placeholder="We'll forget this anyway" />
+                <Input id="name" type="text" placeholder="Enter your name" />
               </FormGroup>
               
               <FormGroup>
                 <Label htmlFor="email">Email Address</Label>
-                <Input id="email" type="email" placeholder="For our marketing team to spam" />
+                <Input id="email" type="email" placeholder="Enter your email address" />
               </FormGroup>
               
               <FormGroup>
                 <Label htmlFor="subject">Subject</Label>
-                <Input id="subject" type="text" placeholder="Keep it short, we won't read it" />
+                <Input id="subject" type="text" placeholder="Enter the subject" />
               </FormGroup>
               
               <FormGroup>
                 <Label htmlFor="message">Your Message</Label>
                 <Textarea 
                   id="message" 
-                  placeholder="Please describe your issue in excruciating detail so we can completely misunderstand it"
+                  placeholder="Please describe your issue or request"
                 />
               </FormGroup>
               
               <FormGroup>
                 <Label htmlFor="urgency">Urgency Level</Label>
-                <Input id="urgency" type="text" placeholder="All tickets are treated with equal indifference" />
+                <Input id="urgency" type="text" placeholder="Low, medium, or high" />
               </FormGroup>
               
-              <Button type="button">Submit to Void</Button>
+              <Button type="button">Submit Request</Button>
             </form>
             
             <DisclaimerText>
-              By submitting this form, you acknowledge that your request is going directly to /dev/null and you agree to solve your own problems.
+              By submitting this form, our support team will review your request and contact you.
             </DisclaimerText>
           </SupportCard>
         </SupportSection>

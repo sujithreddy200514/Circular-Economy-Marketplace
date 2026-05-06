@@ -368,7 +368,7 @@ const TermsOfServicePage: React.FC = () => {
           <SectionTitle>12. Contact Information <LegalIcon>📞</LegalIcon></SectionTitle>
           
           <Paragraph>
-            Questions about the Terms should be sent to us at: terms@circularmarketplace.example.com
+            Questions about the Terms should be sent to us at: CircularEco@gmail.com
           </Paragraph>
           
           <Paragraph>

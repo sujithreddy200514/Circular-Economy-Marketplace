@@ -260,10 +260,10 @@ const Footer: React.FC = () => {
         <FooterSection>
           <FooterHeading>Contact Us</FooterHeading>
           <FooterText>
-            IIITDM Kancheepuram<br />
-            Eco City, EC 12345<br />
-            anvita.prasad1@gmail.com<br />
-            +91 9113553975
+            Mahindra University<br />
+            Hyderabad, Telangana<br />
+            CircularEco@gmail.com<br />
+            +91 9493377754
           </FooterText>
           <FooterText>
             <strong>Working Hours:</strong><br />
