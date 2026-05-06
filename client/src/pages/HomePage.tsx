@@ -392,9 +392,7 @@ const HomePage: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            <Button to="/marketplace">Buy Materials</Button>
-            <Button to="/create-listing">Sell Material</Button>
-            <OutlineButton to="/register">Create Account</OutlineButton>
+            <Button to="/register">Buy/Sell</Button>
           </ButtonContainer>
           
           <StatsContainer
