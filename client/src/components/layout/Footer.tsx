@@ -260,10 +260,10 @@ const Footer: React.FC = () => {
         <FooterSection>
           <FooterHeading>Contact Us</FooterHeading>
           <FooterText>
-            Mahindra University<br />
-            Hyderabad, Telangana<br />
             CircularEco@gmail.com<br />
-            +91 9493377754
+            +91 9493377754<br />
+            Mahindra University<br />
+            Hyderabad, Telangana
           </FooterText>
           <FooterText>
             <strong>Working Hours:</strong><br />
