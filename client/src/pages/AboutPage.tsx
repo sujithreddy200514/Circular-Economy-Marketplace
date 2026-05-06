@@ -159,6 +159,12 @@ const AboutPage: React.FC = () => {
           and tracking the impact of these exchanges.
         </TextContent>
         <TextContent>
+          Customers can sell reusable waste, scrap, by-products, and surplus materials
+          by creating listings with quantity, price, and Hyderabad location details.
+          Supply chain companies can then discover those listings, contact the seller,
+          and purchase materials for recycling, processing, or manufacturing.
+        </TextContent>
+        <TextContent>
           We also offer resources and support to help businesses transition to more
           circular models, including guidance on material recovery, process optimization,
           and product design for circularity.
