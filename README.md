@@ -1,36 +1,40 @@
-# 🌱 Circular Economy Marketplace: Where Trash Gets a Second Chance! 🌱
+# Circular Economy Marketplace
 
-Welcome to the place where "one person's trash is another person's treasure" isn't just a saying—it's a business model!
+A web platform for buying, selling, and tracking reusable waste materials so they can be redirected from landfills back into productive use.
 
+## What Is This?
 
-## 🚮 What Is This?
+Circular Economy Marketplace connects material owners, recyclers, manufacturers, and buyers. Sellers can list available waste or surplus materials, while buyers can discover useful materials for reuse, recycling, or production.
 
-This is a marketplace for materials that would otherwise end up in landfills, oceans, or wherever else humans typically dump things they don't want. Instead of saying "goodbye forever" to perfectly good materials, we're saying "see you later, in another form!"
+## Features
 
-## ✨ Features
+- **Material Listings**: Sellers can create listings with material details, quantity, pricing, location, and availability.
+- **Marketplace Discovery**: Buyers can browse and search reusable materials from different suppliers.
+- **Buying and Selling Flow**: Users can connect around material listings and manage marketplace transactions.
+- **Supply Chain Tracking**: Track how materials move from seller to buyer through the reuse process.
+- **Impact Dashboard**: View sustainability impact such as diverted waste and circular economy contribution.
+- **Logistics Support**: Help coordinate movement of materials to their next useful destination.
 
-- **Material Matchmaking**: Like a match making app, but for waste materials and companies that might want them
-- **Supply Chain Tracking**: Follow your trash's journey to becoming treasure
-- **Impact Dashboard**: Brag about how much waste you've diverted (we won't tell anyone you're just trying to save money)
-- **Logistics Integration**: Because your trash needs a ride to its new home
+## Tech Stack
 
-## 🛠️ Tech Stack
+- React
+- TypeScript
+- Node.js
+- Express
+- PostgreSQL
 
-Built with React, Node.js, and the tears of developers who realized how much perfectly good stuff we throw away every day.
+## Getting Started
 
-## 🚀 Getting Started
+1. Clone this repository.
+2. Install dependencies for the client and server.
+3. Start the backend server.
+4. Start the frontend client.
+5. Open the app and begin listing, buying, or selling reusable materials.
 
-1. Clone this repo
-2. Run `npm install` (because who doesn't love waiting for dependencies to install)
-3. Start the server with `npm start`
-4. Start making the world slightly less trashy!
+## For Developers
 
-## 👩‍💻 For Developers
+Contributions are welcome. Developers can help improve marketplace features, listing management, supply chain tracking, dashboards, and backend APIs.
 
-Our code is like the materials on our platform: ready to be reused, recycled, and repurposed! Feel free to contribute, but remember—spaghetti code goes in the compost bin.
+## Why This Matters
 
-## 🌍 Why This Matters
-
-Because the planet is kind of important, and we should probably try not to fill it with garbage.
-
-Happy recycling! 🔄 
+Many useful materials are wasted because buyers and sellers do not have an easy way to find each other. This project supports a circular economy by helping materials stay in use for longer.
