@@ -28,33 +28,33 @@ const getColorStyles = (color: BadgeColor, theme: any) => {
       };
     case 'success':
       return {
-        background: theme.colors.success.light,
-        color: theme.colors.success.dark,
-        borderColor: theme.colors.success.main
+        background: `${theme.colors.success}20`,
+        color: theme.colors.success,
+        borderColor: theme.colors.success
       };
     case 'error':
       return {
-        background: theme.colors.error.light,
-        color: theme.colors.error.dark,
-        borderColor: theme.colors.error.main
+        background: `${theme.colors.error}20`,
+        color: theme.colors.error,
+        borderColor: theme.colors.error
       };
     case 'warning':
       return {
-        background: theme.colors.warning.light,
-        color: theme.colors.warning.dark,
-        borderColor: theme.colors.warning.main
+        background: `${theme.colors.warning}20`,
+        color: theme.colors.warning,
+        borderColor: theme.colors.warning
       };
     case 'info':
       return {
-        background: theme.colors.info.light,
-        color: theme.colors.info.dark,
-        borderColor: theme.colors.info.main
+        background: `${theme.colors.info}20`,
+        color: theme.colors.info,
+        borderColor: theme.colors.info
       };
     default:
       return {
-        background: theme.colors.grey[100],
-        color: theme.colors.grey[800],
-        borderColor: theme.colors.grey[300]
+        background: theme.colors.background.default,
+        color: theme.colors.text.secondary,
+        borderColor: theme.colors.border
       };
   }
 };
@@ -88,7 +88,7 @@ const BadgeWrapper = styled.span<{
   align-items: center;
   justify-content: center;
   border-radius: ${props => props.$pill ? '50px' : props.theme.borderRadius.sm};
-  font-weight: ${({ theme }) => theme.typography.fontWeightMedium};
+  font-weight: ${({ theme }) => theme.typography.fontWeights.medium};
   border: 1px solid;
   
   ${props => {

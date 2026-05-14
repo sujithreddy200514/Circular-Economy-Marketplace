@@ -45,9 +45,9 @@ const StyledInput = styled.input<{
   border: ${({ $variant, $hasError, theme }) => 
     $variant === 'standard' 
       ? 'none' 
-      : `1px solid ${$hasError ? theme.colors.error.main : theme.colors.border.main}`};
+      : `1px solid ${$hasError ? theme.colors.error : theme.colors.border}`};
   border-bottom: 1px solid ${({ $hasError, theme }) => 
-    $hasError ? theme.colors.error.main : theme.colors.border.main};
+    $hasError ? theme.colors.error : theme.colors.border};
   border-radius: ${({ $variant, theme }) => 
     $variant === 'standard' ? '0' : theme.borderRadius.sm};
   outline: none;
@@ -113,7 +113,7 @@ const HelperText = styled.span<{ $error: boolean }>`
   font-size: 0.75rem;
   margin-top: ${({ theme }) => theme.spacing(0.5)};
   color: ${({ $error, theme }) => 
-    $error ? theme.colors.error.main : theme.colors.text.secondary};
+    $error ? theme.colors.error : theme.colors.text.secondary};
 `;
 
 const TextField: React.FC<TextFieldProps> = ({

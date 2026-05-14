@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
+import api from '../utils/api';
 
 // Mock data - Replace with API call in production
 const mockMaterials = [
@@ -281,7 +282,7 @@ const MarketplacePage: React.FC = () => {
   const [imageErrors, setImageErrors] = useState<{[key: number]: boolean}>({});
   
   // Handle image loading errors
-  const handleImageError = (materialId: number, category: string) => {
+  const handleImageError = (materialId: number) => {
     setImageErrors(prev => ({...prev, [materialId]: true}));
   };
   
@@ -314,6 +315,29 @@ const MarketplacePage: React.FC = () => {
     
     setFilteredMaterials(filtered);
   }, [selectedCategory, searchQuery]);
+
+  useEffect(() => {
+    api.get('/api/listings?status=active')
+      .then((response) => {
+        const listings = response.data?.listings;
+        if (Array.isArray(listings)) {
+          setFilteredMaterials(listings.map((listing: any) => ({
+            id: listing.id,
+            name: listing.title,
+            category: listing.category,
+            quantity: `${listing.quantity} ${listing.unit}`,
+            location: listing.location,
+            price: listing.price === 0 ? 'Free' : `INR ${listing.price}/${listing.unit}`,
+            image: materialFallbackImages[listing.category as keyof typeof materialFallbackImages] || materialFallbackImages.Default,
+            description: listing.description,
+            listingType: listing.listingType
+          })));
+        }
+      })
+      .catch(() => {
+        setFilteredMaterials(mockMaterials);
+      });
+  }, []);
   
   return (
     <PageContainer>
@@ -357,7 +381,7 @@ const MarketplacePage: React.FC = () => {
               <MaterialImage 
                 src={getImageSource(material)} 
                 alt={material.name} 
-                onError={() => handleImageError(material.id, material.category)}
+                onError={() => handleImageError(material.id)}
               />
               <MaterialContent>
                 <MaterialCategory>{material.category}</MaterialCategory>
@@ -368,7 +392,9 @@ const MarketplacePage: React.FC = () => {
                   <MaterialDetail><strong>Location:</strong> {material.location}</MaterialDetail>
                 </MaterialDetails>
                 <CardActions>
-                  <ViewButton to={`/marketplace/${material.id}`}>Buy</ViewButton>
+                  <ViewButton to={`/marketplace/${material.id}`}>
+                    {(material as any).listingType === 'rent' ? 'Rent' : (material as any).listingType === 'donate' ? 'Claim' : 'Buy'}
+                  </ViewButton>
                   <SellLinkButton to="/create-listing">Sell</SellLinkButton>
                 </CardActions>
               </MaterialContent>

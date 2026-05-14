@@ -101,16 +101,6 @@ const Button = styled(Link)`
   }
 `;
 
-const OutlineButton = styled(Button)`
-  background-color: transparent;
-  border: 1px solid ${({ theme }) => theme.colors.primary.main};
-  color: ${({ theme }) => theme.colors.primary.main};
-  
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.primary.light}20;
-  }
-`;
-
 const StatsContainer = styled(motion.div)`
   display: flex;
   gap: 2rem;
@@ -240,16 +230,25 @@ const CTAButton = styled(Link)`
 const loadScript = (src: string): Promise<void> => {
   return new Promise((resolve, reject) => {
     // Check if script already exists
-    const existingScript = document.querySelector(`script[src="${src}"]`);
+    const existingScript = document.querySelector<HTMLScriptElement>(`script[src="${src}"]`);
     if (existingScript) {
-      resolve();
+      if (existingScript.dataset.loaded === 'true') {
+        resolve();
+        return;
+      }
+
+      existingScript.addEventListener('load', () => resolve(), { once: true });
+      existingScript.addEventListener('error', () => reject(new Error(`Failed to load script: ${src}`)), { once: true });
       return;
     }
     
     const script = document.createElement('script');
     script.src = src;
     script.async = true;
-    script.onload = () => resolve();
+    script.onload = () => {
+      script.dataset.loaded = 'true';
+      resolve();
+    };
     script.onerror = () => reject(new Error(`Failed to load script: ${src}`));
     document.head.appendChild(script);
   });

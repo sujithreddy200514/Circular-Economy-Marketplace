@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '../hooks/useAuth';
 import api from '../utils/api';
 
 const PageContainer = styled.div`
@@ -58,6 +58,43 @@ const Input = styled.input`
   &:focus {
     outline: none;
     border-color: ${({ theme }) => theme.colors.primary.main};
+  }
+`;
+
+const PasswordInputWrapper = styled.div`
+  position: relative;
+`;
+
+const PasswordInput = styled(Input)`
+  width: 100%;
+  padding-right: 2.75rem;
+`;
+
+const PasswordToggle = styled.button`
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  padding: 0;
+  color: ${({ theme }) => theme.colors.text.secondary};
+  background: transparent;
+  border: 0;
+  transform: translateY(-50%);
+  cursor: pointer;
+
+  &:hover,
+  &:focus-visible {
+    color: ${({ theme }) => theme.colors.primary.main};
+  }
+
+  &:focus-visible {
+    outline: 2px solid ${({ theme }) => theme.colors.primary.main};
+    outline-offset: 2px;
+    border-radius: 50%;
   }
 `;
 
@@ -141,6 +178,7 @@ const LoginPage: React.FC = () => {
   
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -213,14 +251,56 @@ const LoginPage: React.FC = () => {
           
           <FormGroup>
             <Label htmlFor="password">Password</Label>
-            <Input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter your password"
-              required
-            />
+            <PasswordInputWrapper>
+              <PasswordInput
+                id="password"
+                type={showPassword ? 'text' : 'password'}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Enter your password"
+                required
+              />
+              <PasswordToggle
+                type="button"
+                onClick={() => setShowPassword((current) => !current)}
+                aria-label={showPassword ? 'Hide password' : 'Show password'}
+                title={showPassword ? 'Hide password' : 'Show password'}
+              >
+                {showPassword ? (
+                  <svg
+                    aria-hidden="true"
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M3 3l18 18" />
+                    <path d="M10.6 10.6A2 2 0 0 0 13.4 13.4" />
+                    <path d="M9.9 4.2A9.9 9.9 0 0 1 12 4c5 0 9.3 4.1 10.8 8a12.7 12.7 0 0 1-3.1 4.4" />
+                    <path d="M6.5 6.5A12.8 12.8 0 0 0 1.2 12C2.7 15.9 7 20 12 20a10 10 0 0 0 4.2-.9" />
+                  </svg>
+                ) : (
+                  <svg
+                    aria-hidden="true"
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M1.2 12C2.7 8.1 7 4 12 4s9.3 4.1 10.8 8c-1.5 3.9-5.8 8-10.8 8s-9.3-4.1-10.8-8Z" />
+                    <circle cx="12" cy="12" r="3" />
+                  </svg>
+                )}
+              </PasswordToggle>
+            </PasswordInputWrapper>
             <ForgotPassword to="/forgot-password">Forgot password?</ForgotPassword>
           </FormGroup>
           

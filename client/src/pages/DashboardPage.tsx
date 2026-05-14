@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 
 // Mock data - Replace with API calls in production
@@ -360,7 +360,7 @@ const DashboardPage: React.FC = () => {
     navigate('/supply-chains');
   };
   
-  const handleViewTransaction = (transactionId: string) => {
+  const handleViewTransaction = () => {
     navigate(`/transactions`);
   };
   
@@ -459,7 +459,7 @@ const DashboardPage: React.FC = () => {
                       </TableCell>
                       <TableCell>{transaction.partner}</TableCell>
                       <TableCell>
-                        <ViewLink onClick={() => handleViewTransaction(transaction.id)}>
+                        <ViewLink onClick={handleViewTransaction}>
                           View
                         </ViewLink>
                       </TableCell>

@@ -19,7 +19,8 @@ export const authenticate = (req: Request, res: Response, next: NextFunction) =>
     const token = req.header('Authorization')?.replace('Bearer ', '');
     
     if (!token) {
-      return res.status(401).json({ message: 'Authentication required. No token provided.' });
+      res.status(401).json({ message: 'Authentication required. No token provided.' });
+      return;
     }
 
     // Verify token
@@ -30,17 +31,20 @@ export const authenticate = (req: Request, res: Response, next: NextFunction) =>
     
     next();
   } catch (error) {
-    return res.status(401).json({ message: 'Invalid token. Authentication failed.' });
+    res.status(401).json({ message: 'Invalid token. Authentication failed.' });
+    return;
   }
 };
 
 // Check if user has admin role
 export const isAdmin = (req: Request, res: Response, next: NextFunction) => {
   if (req.user && req.user.role === 'admin') {
-    return next();
+    next();
+    return;
   }
   
-  return res.status(403).json({ message: 'Access denied. Admin privileges required.' });
+  res.status(403).json({ message: 'Access denied. Admin privileges required.' });
+  return;
 };
 
 // Check if user is the owner or an admin
@@ -49,8 +53,10 @@ export const isOwnerOrAdmin = (req: Request, res: Response, next: NextFunction) 
     req.user && 
     (req.user.role === 'admin' || req.user.id === parseInt(req.params.id))
   ) {
-    return next();
+    next();
+    return;
   }
   
-  return res.status(403).json({ message: 'Access denied. Not authorized to access this resource.' });
+  res.status(403).json({ message: 'Access denied. Not authorized to access this resource.' });
+  return;
 }; 

@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 import Navbar from './Navbar';
 import Footer from './Footer';
-import { theme } from '../../styles/theme';
 import { Outlet, useLocation } from 'react-router-dom';
 
 interface LayoutProps {

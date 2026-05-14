@@ -58,7 +58,7 @@ const List = styled.ul`
 
 const WarningBox = styled.div`
   background-color: ${({ theme }) => theme.colors.background.paper};
-  border-left: 4px solid ${({ theme }) => theme.colors.error?.main || theme.colors.error};
+  border-left: 4px solid ${({ theme }) => theme.colors.error};
   padding: ${({ theme }) => theme.spacing(2)};
   margin-bottom: ${({ theme }) => theme.spacing(3)};
   border-radius: 4px;
@@ -68,7 +68,7 @@ const ImportantNote = styled.div`
   font-size: 1rem;
   font-weight: 500;
   background-color: ${({ theme }) => theme.colors.background.paper};
-  border: 1px dashed ${({ theme }) => theme.colors.secondary?.main || theme.colors.secondary};
+  border: 1px dashed ${({ theme }) => theme.colors.secondary.main};
   padding: ${({ theme }) => theme.spacing(2)};
   margin: ${({ theme }) => theme.spacing(3)} 0;
   border-radius: 4px;

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useState, useEffect, ReactNode } from 'react';
 
 export interface User {
   id: number | null;
@@ -6,6 +6,7 @@ export interface User {
   email: string;
   role: 'company' | 'transporter' | 'admin';
   avatar: string;
+  walletBalance?: number;
 }
 
 export interface UserInfo {
@@ -15,9 +16,10 @@ export interface UserInfo {
   role: 'company' | 'transporter' | 'admin';
   avatar: string;
   token: string;
+  walletBalance?: number;
 }
 
-interface AuthContextType {
+export interface AuthContextType {
   isLoggedIn: boolean;
   userInfo: UserInfo;
   user: User | null;
@@ -32,18 +34,11 @@ const defaultUserInfo: UserInfo = {
   email: '',
   role: 'company',
   avatar: '',
-  token: ''
+  token: '',
+  walletBalance: 0
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
-
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
-};
 
 interface AuthProviderProps {
   children: ReactNode;
@@ -86,7 +81,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       name: userData.name,
       email: userData.email,
       role: userData.role,
-      avatar: userData.avatar
+      avatar: userData.avatar,
+      walletBalance: userData.walletBalance
     };
     
     localStorage.setItem('userInfo', JSON.stringify(userForStorage));
@@ -115,7 +111,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       name: updatedUserInfo.name,
       email: updatedUserInfo.email,
       role: updatedUserInfo.role,
-      avatar: updatedUserInfo.avatar
+      avatar: updatedUserInfo.avatar,
+      walletBalance: updatedUserInfo.walletBalance
     };
     
     setUser(userForStorage);

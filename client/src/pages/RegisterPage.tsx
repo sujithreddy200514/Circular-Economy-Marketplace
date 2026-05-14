@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '../hooks/useAuth';
 import api from '../utils/api';
 
 const PageContainer = styled.div`
@@ -379,6 +379,7 @@ const RegisterPage: React.FC = () => {
             >
               <option value="company">Material Supplier/Buyer</option>
               <option value="transporter">Logistics Provider</option>
+              <option value="admin">Admin</option>
             </Select>
           </FormGroup>
           

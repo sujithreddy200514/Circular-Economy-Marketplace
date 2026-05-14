@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '../hooks/useAuth';
+import api from '../utils/api';
 
 // Mock data for a single material - Replace with API call in production
 const getMockMaterial = (id: number) => ({
@@ -175,25 +176,6 @@ const ActionRow = styled.div`
   }
 `;
 
-const SellMaterialButton = styled(Link)`
-  padding: 0.75rem 1.5rem;
-  background-color: transparent;
-  color: ${({ theme }) => theme.colors.primary.main};
-  border: 1px solid ${({ theme }) => theme.colors.primary.main};
-  border-radius: ${({ theme }) => theme.borderRadius.md};
-  font-weight: ${({ theme }) => theme.typography.fontWeights.medium};
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-  width: 100%;
-  text-align: center;
-  text-decoration: none;
-  
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.primary.light}20;
-  }
-`;
-
 const ContactButton = styled(ActionButton)`
   background-color: transparent;
   border: 1px solid ${({ theme }) => theme.colors.primary.main};
@@ -350,18 +332,55 @@ const MaterialDetailPage: React.FC = () => {
   //   fetchMaterial();
   // }, [materialId]);
   
-  const handleOrder = () => {
+  useEffect(() => {
+    api.get(`/api/listings/${materialId}`)
+      .then((response) => {
+        const listing = response.data?.listing;
+        if (listing) {
+          setMaterial({
+            ...getMockMaterial(materialId),
+            id: listing.id,
+            name: listing.title,
+            category: listing.category,
+            subcategory: listing.subcategory,
+            quantity: `${listing.quantity} ${listing.unit}`,
+            minOrderQuantity: `1 ${listing.unit}`,
+            location: listing.location,
+            price: listing.price === 0 ? 'Free' : `INR ${listing.price}/${listing.unit}`,
+            description: listing.description,
+            seller: {
+              ...getMockMaterial(materialId).seller,
+              id: listing.sellerId,
+              name: listing.sellerName
+            }
+          });
+        }
+      })
+      .catch(() => undefined);
+  }, [materialId]);
+
+  const handleOrder = async (paymentMethod: 'wallet' | 'cod') => {
     if (!isLoggedIn) {
       navigate('/login');
       return;
     }
     
     setIsOrdering(true);
-    // In a real application, you would handle the order process here
-    setTimeout(() => {
-      alert('Order placed successfully!');
+    try {
+      const response = await api.post('/api/transactions', {
+        listingId: materialId,
+        buyerId: 1,
+        quantity: 1,
+        paymentMethod
+      });
+      const transaction = response.data?.transaction;
+      alert(`Order placed with ${paymentMethod === 'wallet' ? 'demo wallet' : 'COD fallback'}. Impact: ${transaction?.impact?.co2SavedKg || 0} kg CO2 saved.`);
+      navigate('/transactions');
+    } catch (error: any) {
+      alert(error.response?.data?.message || 'Order could not be placed');
+    } finally {
       setIsOrdering(false);
-    }, 1000);
+    }
   };
   
   const handleContact = () => {
@@ -422,14 +441,14 @@ const MaterialDetailPage: React.FC = () => {
               </AvailabilityInfo>
               <ActionRow>
                 <ActionButton 
-                  onClick={handleOrder}
+                  onClick={() => handleOrder('wallet')}
                   disabled={isOrdering}
                 >
-                  {isOrdering ? 'Processing...' : 'Buy Material'}
+                  {isOrdering ? 'Processing...' : 'Pay Wallet'}
                 </ActionButton>
-                <SellMaterialButton to="/create-listing">
-                  Sell Material
-                </SellMaterialButton>
+                <ActionButton onClick={() => handleOrder('cod')} disabled={isOrdering}>
+                  COD
+                </ActionButton>
               </ActionRow>
               <div style={{ marginTop: '1rem' }}>
                 <ContactButton onClick={handleContact}>

@@ -1,8 +1,6 @@
 import React, { ReactNode, ElementType } from 'react';
 import styled, { css } from 'styled-components';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { theme } from '../../styles/theme';
 
 type ButtonSize = 'small' | 'medium' | 'large';
 type ButtonVariant = 'primary' | 'secondary' | 'outlined' | 'text' | 'accent' | 'success' | 'error';
@@ -11,6 +9,7 @@ interface ButtonStyleProps {
   $variant?: ButtonVariant;
   $size?: ButtonSize;
   $fullWidth?: boolean;
+  $animateOnHover?: boolean;
   disabled?: boolean;
 }
 
@@ -33,7 +32,7 @@ interface ButtonProps {
 }
 
 // Size styles
-const getSizeStyles = (size: ButtonSize, theme: any) => {
+const getSizeStyles = (size: ButtonSize) => {
   switch (size) {
     case 'small':
       return css`
@@ -56,6 +55,9 @@ const getSizeStyles = (size: ButtonSize, theme: any) => {
 
 // Variant styles
 const getVariantStyles = (variant: ButtonVariant, theme: any) => {
+  const successColor = theme.colors.feedback?.success || theme.colors.success || '#4CAF50';
+  const errorColor = theme.colors.feedback?.error || theme.colors.error || '#F44336';
+
   switch (variant) {
     case 'primary':
       return css`
@@ -106,7 +108,7 @@ const getVariantStyles = (variant: ButtonVariant, theme: any) => {
       `;
     case 'success':
       return css`
-        background-color: ${theme.colors.feedback.success};
+        background-color: ${successColor};
         color: white;
         &:hover:not(:disabled) {
           background-color: #388e3c;
@@ -114,7 +116,7 @@ const getVariantStyles = (variant: ButtonVariant, theme: any) => {
       `;
     case 'error':
       return css`
-        background-color: ${theme.colors.feedback.error};
+        background-color: ${errorColor};
         color: white;
         &:hover:not(:disabled) {
           background-color: #d32f2f;
@@ -143,6 +145,18 @@ const StyledButton = styled.button<ButtonStyleProps>`
   transition: all 0.2s ease;
   text-decoration: none;
   width: ${({ $fullWidth }) => ($fullWidth ? '100%' : 'auto')};
+
+  &:hover:not(:disabled) {
+    ${({ $animateOnHover = true }) => $animateOnHover && css`
+    transform: translateY(-1px) scale(1.03);
+    `}
+  }
+
+  &:active:not(:disabled) {
+    ${({ $animateOnHover = true }) => $animateOnHover && css`
+    transform: scale(0.98);
+    `}
+  }
   
   &:disabled {
     opacity: 0.7;
@@ -152,7 +166,7 @@ const StyledButton = styled.button<ButtonStyleProps>`
   }
   
   ${({ $variant = 'primary', theme }) => getVariantStyles($variant, theme)}
-  ${({ $size = 'medium', theme }) => getSizeStyles($size, theme)}
+  ${({ $size = 'medium' }) => getSizeStyles($size)}
 `;
 
 const LoadingSpinner = styled.div`
@@ -185,15 +199,6 @@ const Button: React.FC<ButtonProps> = ({
   animateOnHover = true,
   ...rest
 }) => {
-  // Motion variants for animation
-  const buttonVariants = {
-    hover: animateOnHover ? {
-      scale: 1.03,
-      transition: { duration: 0.2 }
-    } : {},
-    tap: { scale: 0.98 }
-  };
-
   // If 'to' prop is provided and 'as' is not, use Link as the component
   const Component = to && !as ? Link : as || 'button';
   
@@ -203,10 +208,8 @@ const Button: React.FC<ButtonProps> = ({
       $variant={variant}
       $size={size}
       $fullWidth={fullWidth}
+      $animateOnHover={animateOnHover}
       disabled={disabled || isLoading}
-      whileHover="hover"
-      whileTap="tap"
-      variants={buttonVariants}
       to={to}
       {...rest}
     >

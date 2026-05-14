@@ -1,4 +1,4 @@
-import { useEffect, useState, RefObject } from 'react';
+import { useEffect, useRef, useState, RefObject } from 'react';
 
 // Type for Vanta effect options
 interface VantaOptions {
@@ -20,16 +20,25 @@ interface VantaOptions {
 const loadScript = (src: string): Promise<void> => {
   return new Promise((resolve, reject) => {
     // Check if script already exists
-    const existingScript = document.querySelector(`script[src="${src}"]`);
+    const existingScript = document.querySelector<HTMLScriptElement>(`script[src="${src}"]`);
     if (existingScript) {
-      resolve();
+      if (existingScript.dataset.loaded === 'true') {
+        resolve();
+        return;
+      }
+
+      existingScript.addEventListener('load', () => resolve(), { once: true });
+      existingScript.addEventListener('error', () => reject(new Error(`Failed to load script: ${src}`)), { once: true });
       return;
     }
     
     const script = document.createElement('script');
     script.src = src;
     script.async = true;
-    script.onload = () => resolve();
+    script.onload = () => {
+      script.dataset.loaded = 'true';
+      resolve();
+    };
     script.onerror = () => reject(new Error(`Failed to load script: ${src}`));
     document.head.appendChild(script);
   });
@@ -49,7 +58,7 @@ const useVanta = (
 ) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
-  const [effect, setEffect] = useState<any>(null);
+  const effectRef = useRef<any>(null);
 
   useEffect(() => {
     const initVanta = async () => {
@@ -67,13 +76,11 @@ const useVanta = (
         }
         
         // Create Vanta effect once scripts are loaded
-        if (!effect && ref.current && (window as any).VANTA && (window as any).VANTA[effectName]) {
-          const vantaEffect = (window as any).VANTA[effectName]({
+        if (!effectRef.current && ref.current && (window as any).VANTA && (window as any).VANTA[effectName]) {
+          effectRef.current = (window as any).VANTA[effectName]({
             el: ref.current,
             ...options
           });
-          
-          setEffect(vantaEffect);
         }
         
         setLoading(false);
@@ -88,8 +95,9 @@ const useVanta = (
     
     // Cleanup function
     return () => {
-      if (effect) {
-        effect.destroy();
+      if (effectRef.current) {
+        effectRef.current.destroy();
+        effectRef.current = null;
       }
     };
   }, [effectName, ref, options]);

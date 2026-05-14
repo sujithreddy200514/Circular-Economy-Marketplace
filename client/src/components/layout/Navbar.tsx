@@ -240,9 +240,7 @@ const transporterLinks = [
 ];
 
 const adminLinks = [
-  { to: '/admin', label: 'Admin Panel' },
-  { to: '/users', label: 'Users' },
-  { to: '/stats', label: 'Statistics' }
+  { to: '/admin', label: 'Admin Panel' }
 ];
 
 const Navbar: React.FC<NavbarProps> = ({

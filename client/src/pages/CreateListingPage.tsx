@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { useNavigate, Link } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '../hooks/useAuth';
+import api from '../utils/api';
 
 // Mock categories - would be fetched from API in production
 const materialCategories = [
@@ -206,6 +207,7 @@ const CreateListingPage: React.FC = () => {
     unit: 'kg',
     price: '',
     priceUnit: 'per kg',
+    listingType: 'sell',
     location: '',
     images: [] as File[],
     certification: '',
@@ -264,6 +266,7 @@ const CreateListingPage: React.FC = () => {
         subcategory: formData.subcategory,
         quantity: `${formData.quantity} ${formData.unit}`,
         price: `INR ${formData.price} ${formData.priceUnit}`,
+        listingType: formData.listingType,
         location: formData.location,
         createdAt: '2026-04-16',
         status: 'active',
@@ -272,6 +275,14 @@ const CreateListingPage: React.FC = () => {
         certification: formData.certification,
         availabilityDate: formData.availabilityDate
       };
+
+      await api.post('/api/listings', {
+        ...newListing,
+        quantity: Number(formData.quantity),
+        unit: formData.unit,
+        price: Number(formData.price),
+        status: 'pending'
+      });
       
       // Get existing listings from localStorage or initialize empty array
       const existingListings = JSON.parse(localStorage.getItem('materialListings') || '[]');
@@ -288,7 +299,7 @@ const CreateListingPage: React.FC = () => {
         alert('Listing created successfully!');
         navigate('/my-listings');
       }, 1000);
-    } catch (err) {
+    } catch {
       setIsSubmitting(false);
       setError('Failed to create listing. Please try again.');
     }
@@ -418,6 +429,21 @@ const CreateListingPage: React.FC = () => {
             </FormRow>
             
             <FormRow>
+              <FormGroup>
+                <FormLabel htmlFor="listingType">Circular Action*</FormLabel>
+                <FormSelect
+                  id="listingType"
+                  name="listingType"
+                  value={formData.listingType}
+                  onChange={handleChange}
+                  required
+                >
+                  <option value="sell">Sell</option>
+                  <option value="rent">Rent</option>
+                  <option value="donate">Donate</option>
+                  <option value="recycle">Recycle Service</option>
+                </FormSelect>
+              </FormGroup>
               <FormGroup>
                 <FormLabel htmlFor="price">Price*</FormLabel>
                 <FormInput

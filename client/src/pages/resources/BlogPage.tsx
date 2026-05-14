@@ -52,7 +52,7 @@ const CategoryBadge = styled.span`
   background-color: ${({ theme }) => theme.colors.primary.main};
   color: white;
   padding: ${({ theme }) => theme.spacing(0.5)} ${({ theme }) => theme.spacing(1.5)};
-  border-radius: ${({ theme }) => theme.borderRadius.pill};
+  border-radius: 999px;
   font-size: 0.75rem;
   font-weight: 500;
   z-index: 1;

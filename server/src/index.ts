@@ -22,6 +22,7 @@ import transportRoutes from './routes/transport.routes';
 import supplyChainRoutes from './routes/supplyChain.routes';
 import reportRoutes from './routes/report.routes';
 import messageRoutes from './routes/message.routes';
+import adminRoutes from './routes/admin.routes';
 
 // Create Express app
 const app: Express = express();
@@ -64,6 +65,7 @@ app.use('/api/transport', transportRoutes);
 app.use('/api/supply-chains', supplyChainRoutes);
 app.use('/api/reports', reportRoutes);
 app.use('/api/messages', messageRoutes);
+app.use('/api/admin', adminRoutes);
 
 // Health check endpoint
 app.get('/health', (req, res) => {

@@ -58,7 +58,7 @@ const List = styled.ul`
 
 const HighlightBox = styled.div`
   background-color: ${({ theme }) => theme.colors.background.paper};
-  border-left: 4px solid ${({ theme }) => theme.colors.warning.main};
+  border-left: 4px solid ${({ theme }) => theme.colors.warning};
   padding: ${({ theme }) => theme.spacing(2)};
   margin-bottom: ${({ theme }) => theme.spacing(3)};
   border-radius: 4px;

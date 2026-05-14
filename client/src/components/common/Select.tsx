@@ -6,7 +6,7 @@ interface SelectOption {
   label: string;
 }
 
-interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
+interface SelectProps extends Omit<SelectHTMLAttributes<HTMLSelectElement>, 'size'> {
   options: SelectOption[];
   label?: string;
   error?: string;
@@ -31,7 +31,7 @@ const StyledSelect = styled.select<{ $size: string; $hasError: boolean }>`
   appearance: none;
   background-color: ${({ theme }) => theme.colors.background.paper};
   border: 1px solid ${({ theme, $hasError }) => 
-    $hasError ? theme.colors.error.main : theme.colors.border.main};
+    $hasError ? theme.colors.error : theme.colors.border};
   border-radius: ${({ theme }) => theme.borderRadius.sm};
   color: ${({ theme }) => theme.colors.text.primary};
   cursor: pointer;
@@ -89,7 +89,7 @@ const SelectWrapper = styled.div`
 `;
 
 const ErrorMessage = styled.span`
-  color: ${({ theme }) => theme.colors.error.main};
+  color: ${({ theme }) => theme.colors.error};
   font-size: 0.75rem;
   margin-top: ${({ theme }) => theme.spacing(0.5)};
 `;

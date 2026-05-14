@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '../hooks/useAuth';
 
 const PageContainer = styled.div`
   max-width: 1000px;
@@ -292,7 +292,7 @@ const ProfilePage: React.FC = () => {
       setIsEditing(false);
       setSuccess('Profile updated successfully');
       setTimeout(() => setSuccess(''), 3000);
-    } catch (err) {
+    } catch {
       setError('Failed to update profile. Please try again.');
     }
   };
@@ -315,7 +315,7 @@ const ProfilePage: React.FC = () => {
       setSuccess('Password updated successfully');
       setPassword({ current: '', new: '', confirm: '' });
       setTimeout(() => setSuccess(''), 3000);
-    } catch (err) {
+    } catch {
       setError('Failed to update password. Please try again.');
     }
   };

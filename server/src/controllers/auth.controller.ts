@@ -1,11 +1,8 @@
 import { Request, Response } from 'express';
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
 import { UserLoginInput, UserRegistrationInput, UserRole, CompanyType } from '../interfaces/user.interface';
 import Joi from 'joi';
-import pool from '../config/database';
-import { hashPassword, comparePassword } from '../utils/password.utils';
 import { generateToken } from '../utils/jwt.utils';
+import { createUser, findUserByEmail } from '../data/demoStore';
 
 // Validation schema for user registration
 const registrationSchema = Joi.object({
@@ -39,17 +36,39 @@ const loginSchema = Joi.object({
  */
 export const register = async (req: Request, res: Response) => {
   try {
-    console.log('Registration request received:', req.body);
-    
-    // Skip validation for now to simplify debugging
-    
-    // For now use mock data
-    const userData = {
-      id: 'user-' + Math.floor(Math.random() * 10000),
-      name: req.body.name,
+    const { error } = registrationSchema.validate({
       email: req.body.email,
-      role: req.body.role,
-      companyName: req.body.companyName
+      password: req.body.password,
+      company_name: req.body.companyName || req.body.company_name,
+      role: req.body.role || 'company',
+      company_type: req.body.company_type || 'manufacturer'
+    }, { allowUnknown: true });
+
+    if (error) {
+      res.status(400).json({ success: false, message: error.details[0].message });
+      return;
+    }
+
+    if (findUserByEmail(req.body.email)) {
+      res.status(409).json({ success: false, message: 'Email is already registered' });
+      return;
+    }
+
+    const createdUser = createUser({
+      name: req.body.name || req.body.companyName,
+      email: req.body.email,
+      password: req.body.password,
+      role: req.body.role || 'company',
+      companyName: req.body.companyName || req.body.company_name
+    });
+
+    const userData = {
+      id: createdUser.id,
+      name: createdUser.name,
+      email: createdUser.email,
+      role: createdUser.role,
+      companyName: createdUser.companyName,
+      walletBalance: createdUser.walletBalance
     };
     
     // Generate token
@@ -60,9 +79,6 @@ export const register = async (req: Request, res: Response) => {
     });
     
     // Return success response with token
-    console.log('Registration successful:', userData);
-    console.log('Generated token:', token);
-    
     res.status(201).json({
       success: true,
       message: 'User registered successfully',
@@ -83,16 +99,30 @@ export const register = async (req: Request, res: Response) => {
  */
 export const login = async (req: Request, res: Response) => {
   try {
-    // Placeholder for login logic
     const { email, password } = req.body;
-    
-    // Mock successful login using the generateToken utility
-    const token = generateToken({ id: 'mock-id', email });
+    const user = findUserByEmail(email);
+
+    if (!user || user.password !== password) {
+      res.status(401).json({
+        success: false,
+        message: 'Invalid email or password'
+      });
+      return;
+    }
+
+    const token = generateToken({ id: user.id, email: user.email, role: user.role });
     
     res.status(200).json({
       success: true,
       token,
-      user: { id: 'mock-id', email }
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        companyName: user.companyName,
+        walletBalance: user.walletBalance
+      }
     });
   } catch (error) {
     console.error('Login error:', error);

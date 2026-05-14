@@ -11,6 +11,7 @@ import Badge from '../components/common/Badge';
 import Card from '../components/common/Card';
 import TextField from '../components/common/TextField';
 import Modal from '../components/common/Modal';
+import api from '../utils/api';
 
 // Error boundary component
 class ErrorBoundary extends React.Component<{children: React.ReactNode}, {hasError: boolean, error: Error | null}> {
@@ -62,7 +63,6 @@ const TransactionsPageWithErrorBoundary: React.FC = () => {
 
 // Move the original component content here
 const TransactionsPageContent: React.FC = () => {
-  try {
     // Mock data - would be replaced with API calls
     const MOCK_TRANSACTIONS = [
       {
@@ -362,6 +362,33 @@ const TransactionsPageContent: React.FC = () => {
       search: '',
       dateRange: 'all'
     });
+
+    useEffect(() => {
+      api.get('/api/transactions')
+        .then((response) => {
+          const apiTransactions = response.data?.transactions;
+          if (Array.isArray(apiTransactions) && apiTransactions.length > 0) {
+            const mapped = apiTransactions.map((tx: any) => ({
+              id: tx.id,
+              type: 'purchase' as TransactionType,
+              date: new Date(tx.createdAt),
+              amount: tx.total,
+              status: tx.status === 'completed' ? 'completed' as TransactionStatus : 'pending' as TransactionStatus,
+              counterpartyName: tx.paymentMethod === 'cod' ? 'COD Seller' : 'Wallet Seller',
+              counterpartyId: String(tx.sellerId),
+              material: tx.material,
+              quantity: `${tx.quantity}${tx.unit}`,
+              invoiceNumber: tx.id.toUpperCase(),
+              paymentMethod: tx.paymentMethod === 'cod' ? 'Cash on Delivery' : 'Demo Wallet',
+              deliveryStatus: tx.status === 'completed' ? 'Delivered' : 'Awaiting Delivery',
+              notes: `Impact: ${tx.impact.co2SavedKg} kg CO2 saved, ${tx.impact.wasteReducedKg} kg waste reduced.`
+            }));
+            setTransactions(mapped);
+            setFilteredTransactions(mapped);
+          }
+        })
+        .catch(() => undefined);
+    }, []);
     
     // Calculate stats
     const totalPurchases = transactions
@@ -698,25 +725,6 @@ const TransactionsPageContent: React.FC = () => {
         </Modal>
       </PageContainer>
     );
-  } catch (error) {
-    console.error("Caught error in TransactionsPageContent:", error);
-    return (
-      <div style={{ 
-        padding: '20px', 
-        margin: '20px', 
-        backgroundColor: '#ffebee', 
-        border: '1px solid #ef9a9a',
-        borderRadius: '4px'
-      }}>
-        <h2>Something went wrong</h2>
-        <p>Error: {error instanceof Error ? error.message : String(error)}</p>
-        <p>Check the console for more details.</p>
-        <Button variant="primary" onClick={() => window.location.reload()}>
-          Refresh Page
-        </Button>
-      </div>
-    );
-  }
 };
 
 export default TransactionsPageWithErrorBoundary; 

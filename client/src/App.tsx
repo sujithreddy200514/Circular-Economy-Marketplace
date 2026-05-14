@@ -1,10 +1,11 @@
-import React, { ReactElement, lazy, Suspense } from 'react';
+import { ReactElement, lazy, Suspense } from 'react';
 import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import GlobalStyles from './styles/GlobalStyles';
 import { theme } from './theme/theme';
 import Layout from './components/layout/Layout';
-import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { AuthProvider } from './contexts/AuthContext';
+import { useAuth } from './hooks/useAuth';
 
 // Basic pages (eagerly loaded)
 import HomePage from './pages/HomePage';
@@ -26,6 +27,7 @@ const LoginPage = lazy(() => import('./pages/LoginPage'));
 const RegisterPage = lazy(() => import('./pages/RegisterPage'));
 const TransactionsPage = lazy(() => import('./pages/TransactionsPage'));
 const OrdersPage = lazy(() => import('./pages/OrdersPage'));
+const AdminPage = lazy(() => import('./pages/AdminPage'));
 
 // Resource Pages (lazily loaded)
 const BlogPage = lazy(() => import('./pages/resources/BlogPage'));
@@ -103,6 +105,12 @@ function AppRoutes() {
             <Route path="orders" element={
               <ProtectedRoute>
                 <OrdersPage />
+              </ProtectedRoute>
+            } />
+
+            <Route path="admin" element={
+              <ProtectedRoute>
+                <AdminPage />
               </ProtectedRoute>
             } />
             

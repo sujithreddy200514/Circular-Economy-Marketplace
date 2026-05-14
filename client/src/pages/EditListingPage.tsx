@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { useNavigate, useParams, Link } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '../hooks/useAuth';
 
 // Mock categories - would be fetched from API in production
 const materialCategories = [
@@ -311,7 +311,7 @@ const EditListingPage: React.FC = () => {
     try {
       // Get listings from localStorage
       const storedListings = localStorage.getItem('materialListings');
-      let listings = storedListings ? JSON.parse(storedListings) : mockListings;
+      const listings = storedListings ? JSON.parse(storedListings) : mockListings;
       
       // If no listings in localStorage, fallback to mock data
       if (!storedListings) {
